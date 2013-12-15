@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Flat UI Free</title>
+    <title>Hoarder</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Loading Bootstrap -->
@@ -10,6 +10,14 @@
 
     <!-- Loading Flat UI -->
     <link href="css/flat-ui.css" rel="stylesheet">
+
+    <link href="jquery.dynatable.css" rel="stylesheet">
+
+    <style type="text/css" media="screen">
+      th {
+        background-color: black;
+      }
+    </style>
 
     <link rel="shortcut icon" href="images/favicon.ico">
 
@@ -20,10 +28,41 @@
   </head>
   <body>
     <div class="container">
-      Start doing your next awesomeness here.
+      <h1 class="demo-headline">
+        Hoarder 
+      </h1>
+      <div class="demo-row">
+        <div class="login-form">
+          <div class="form-group">
+            <input type="text" id="name" value="" placeholder="Name" class="form-control login-name">
+          </div>
+          <div class="form-group">
+            <input type="text" id="email" value="" placeholder="Email" class="form-control login-email">
+          </div>
+          <div class="form-group">
+            <a href="#" id="add-user" class="btn btn-block btn-lg btn-primary">Add User</a>
+          </div>
+        </div>
+
+        <div id="demo-row">
+          <p>
+            <table id="my-final-table" class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </p>
+        </div>
+
+      </div>
     </div>
     <!-- /.container -->
-
 
     <!-- Load JS here for greater good =============================-->
     <script src="js/jquery-1.8.3.min.js"></script>
@@ -36,5 +75,64 @@
     <script src="js/flatui-radio.js"></script>
     <script src="js/jquery.tagsinput.js"></script>
     <script src="js/jquery.placeholder.js"></script>
+    <script src="jquery.dynatable.js"></script>
+    <script type="text/javascript" charset="utf-8">
+
+      $(function() {
+
+        if (localStorage) {
+
+          function fetchRecords() {
+            var records = [];
+
+            for (var key in localStorage) {
+              var jsonString = localStorage.getItem(key);
+              record = JSON.parse(jsonString);
+              records.push(record);
+            };
+            return records;
+          }
+
+          function renderTable() {
+            var records = fetchRecords();
+            $('#my-final-table').dynatable({
+              dataset: {
+                records: records
+              }
+            });
+          }
+
+          function addRecord() {
+            var name = $('#name').val();
+            var email = $('#email').val();
+            var action = '<a href="#" class="remove" data-email="' + email + '">Remove</a>';
+            if (name != "" && email != "") {
+              var data = JSON.stringify({ "name": name, "email": email, "action": action });
+              localStorage.setItem(email, data);
+            }
+          }
+
+          renderTable();
+
+          $("#add-user").on("click", function(e) { 
+            e.preventDefault();
+            addRecord();
+            window.location = 'index.html';
+          });
+
+          $(".remove").on("click", function(e) {
+            e.preventDefault();
+            element = $(this);
+            var email = $(element).data("email");
+            localStorage.removeItem(email);
+            window.location = 'index.html';
+          });
+
+        } else {
+          console.log("Oops, there is no local storage.  Now what?");
+        }
+      });
+
+    </script>
   </body>
 </html>
