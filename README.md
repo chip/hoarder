@@ -1,6 +1,8 @@
 # Hoarder 
 
-### Hoarder is a tiny app for adding records using the following tools:
+### Single-page app for adding/removing records
+
+Hoarder uses the following tools:
   
   * **Flat-UI** for CSS styling and images - http://designmodo.github.io/Flat-UI/
 
