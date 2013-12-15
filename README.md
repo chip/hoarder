@@ -14,7 +14,7 @@ Hoarder uses the following tools:
 
   * **HTML**
 
-![screenshot](hoarder.png)
+![screenshot](https://raw.github.com/chip/hoarder/master/hoarder.png)
 
 ## Quick Start
 
